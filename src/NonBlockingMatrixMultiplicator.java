@@ -2,7 +2,6 @@ import mpi.MPI;
 import mpi.Request;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NonBlockingMatrixMultiplicator {
     public static int NUMBER_OF_ROWS_IN_A = 10;
@@ -41,10 +40,12 @@ public class NonBlockingMatrixMultiplicator {
 
             for (int destination = 1; destination <= workersNumber; destination++) {
                 rows[0] = (destination <= extra) ? averow + 1 : averow;
-                MPI.COMM_WORLD.Isend(offset, 0, 1, MPI.INT, destination, FROM_MASTER_TAG);
-                MPI.COMM_WORLD.Isend(rows, 0, 1, MPI.INT, destination, FROM_MASTER_TAG);
+                var offsetRequest = MPI.COMM_WORLD.Isend(offset, 0, 1, MPI.INT, destination, FROM_MASTER_TAG);
+                var rowsRequest = MPI.COMM_WORLD.Isend(rows, 0, 1, MPI.INT, destination, FROM_MASTER_TAG);
                 MPI.COMM_WORLD.Isend(a, offset[0], rows[0], MPI.OBJECT, destination, FROM_MASTER_TAG);
                 MPI.COMM_WORLD.Isend(b, 0, NUMBER_OF_COLS_IN_A, MPI.OBJECT, destination, FROM_MASTER_TAG);
+                offsetRequest.Wait();
+                rowsRequest.Wait();
                 offset[0] += rows[0];
             }
             ArrayList<Request> subTasksRequests = new ArrayList<>();
