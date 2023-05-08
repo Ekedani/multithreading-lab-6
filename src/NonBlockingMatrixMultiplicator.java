@@ -40,21 +40,21 @@ public class NonBlockingMatrixMultiplicator {
 
             for (int destination = 1; destination <= workersNumber; destination++) {
                 rows[0] = (destination <= extra) ? averow + 1 : averow;
-                var offsetRequest = MPI.COMM_WORLD.Isend(offset, 0, 1, MPI.INT, destination, FROM_MASTER_TAG);
-                var rowsRequest = MPI.COMM_WORLD.Isend(rows, 0, 1, MPI.INT, destination, FROM_MASTER_TAG);
-                MPI.COMM_WORLD.Isend(a, offset[0], rows[0], MPI.OBJECT, destination, FROM_MASTER_TAG);
-                MPI.COMM_WORLD.Isend(b, 0, NUMBER_OF_COLS_IN_A, MPI.OBJECT, destination, FROM_MASTER_TAG);
+                var offsetRequest = MPI.COMM_WORLD.Isend(offset, 0, 1, MPI.INT, destination, MessageTag.OFFSET_FROM_MASTER.ordinal());
+                var rowsRequest = MPI.COMM_WORLD.Isend(rows, 0, 1, MPI.INT, destination, MessageTag.ROWS_FROM_MASTER.ordinal());
+                MPI.COMM_WORLD.Isend(a, offset[0], rows[0], MPI.OBJECT, destination, MessageTag.A_FROM_MASTER.ordinal());
+                MPI.COMM_WORLD.Isend(b, 0, NUMBER_OF_COLS_IN_A, MPI.OBJECT, destination, MessageTag.B_FROM_MASTER.ordinal());
                 offsetRequest.Wait();
                 rowsRequest.Wait();
                 offset[0] += rows[0];
             }
             ArrayList<Request> subTasksRequests = new ArrayList<>();
             for (int source = 1; source <= workersNumber; source++) {
-                var offsetRequest = MPI.COMM_WORLD.Irecv(offset, 0, 1, MPI.INT, source, FROM_WORKER_TAG);
-                var rowsRequest = MPI.COMM_WORLD.Irecv(rows, 0, 1, MPI.INT, source, FROM_WORKER_TAG);
+                var offsetRequest = MPI.COMM_WORLD.Irecv(offset, 0, 1, MPI.INT, source, MessageTag.OFFSET_FROM_WORKER.ordinal());
+                var rowsRequest = MPI.COMM_WORLD.Irecv(rows, 0, 1, MPI.INT, source, MessageTag.ROWS_FROM_WORKER.ordinal());
                 offsetRequest.Wait();
                 rowsRequest.Wait();
-                subTasksRequests.add(MPI.COMM_WORLD.Irecv(c, offset[0], rows[0], MPI.OBJECT, source, FROM_WORKER_TAG));
+                subTasksRequests.add(MPI.COMM_WORLD.Irecv(c, offset[0], rows[0], MPI.OBJECT, source, MessageTag.C_FROM_WORKER.ordinal()));
             }
             for (var request : subTasksRequests) {
                 request.Wait();
@@ -62,14 +62,14 @@ public class NonBlockingMatrixMultiplicator {
             System.out.println("===== RESULT MATRIX =====");
             Helper.outputMatrix(c);
         } else {
-            var offsetRequest = MPI.COMM_WORLD.Irecv(offset, 0, 1, MPI.INT, MASTER, FROM_MASTER_TAG);
-            var rowsRequest = MPI.COMM_WORLD.Irecv(rows, 0, 1, MPI.INT, MASTER, FROM_MASTER_TAG);
-            var bRequest = MPI.COMM_WORLD.Irecv(b, 0, NUMBER_OF_COLS_IN_A, MPI.OBJECT, MASTER, FROM_MASTER_TAG);
+            var offsetRequest = MPI.COMM_WORLD.Irecv(offset, 0, 1, MPI.INT, MASTER, MessageTag.OFFSET_FROM_MASTER.ordinal());
+            var rowsRequest = MPI.COMM_WORLD.Irecv(rows, 0, 1, MPI.INT, MASTER, MessageTag.ROWS_FROM_MASTER.ordinal());
+            var bRequest = MPI.COMM_WORLD.Irecv(b, 0, NUMBER_OF_COLS_IN_A, MPI.OBJECT, MASTER, MessageTag.B_FROM_MASTER.ordinal());
             offsetRequest.Wait();
             rowsRequest.Wait();
-            MPI.COMM_WORLD.Isend(offset, 0, 1, MPI.INT, MASTER, FROM_WORKER_TAG);
-            MPI.COMM_WORLD.Isend(rows, 0, 1, MPI.INT, MASTER, FROM_WORKER_TAG);
-            var aRequest = MPI.COMM_WORLD.Irecv(a, 0, rows[0], MPI.OBJECT, MASTER, FROM_MASTER_TAG);
+            MPI.COMM_WORLD.Isend(offset, 0, 1, MPI.INT, MASTER, MessageTag.OFFSET_FROM_WORKER.ordinal());
+            MPI.COMM_WORLD.Isend(rows, 0, 1, MPI.INT, MASTER, MessageTag.ROWS_FROM_WORKER.ordinal());
+            var aRequest = MPI.COMM_WORLD.Irecv(a, 0, rows[0], MPI.OBJECT, MASTER, MessageTag.A_FROM_MASTER.ordinal());
             aRequest.Wait();
             bRequest.Wait();
 
@@ -81,7 +81,7 @@ public class NonBlockingMatrixMultiplicator {
                 }
             }
 
-            MPI.COMM_WORLD.Isend(c, 0, rows[0], MPI.OBJECT, MASTER, FROM_WORKER_TAG);
+            MPI.COMM_WORLD.Isend(c, 0, rows[0], MPI.OBJECT, MASTER, MessageTag.C_FROM_WORKER.ordinal());
         }
         MPI.Finalize();
     }
