@@ -1,12 +1,14 @@
 import mpi.MPI;
 
 public class BlockingMatrixMultiplicator {
-    public static int NUMBER_OF_ROWS_IN_A = 10;
-    public static int NUMBER_OF_COLS_IN_A = 10;
-    public static int NUMBER_OF_COLS_IN_B = 10;
+    public static int NUMBER_OF_ROWS_IN_A = 1000;
+    public static int NUMBER_OF_COLS_IN_A = 1000;
+    public static int NUMBER_OF_COLS_IN_B = 1000;
     public static int MASTER = 0;
     public static int FROM_MASTER_TAG = 1;
     public static int FROM_WORKER_TAG = 2;
+
+    public static boolean RESULT_IS_PRINTED = false;
 
     public static void main(String[] args) {
         int taskId, tasksNumber, workersNumber;
@@ -32,6 +34,7 @@ public class BlockingMatrixMultiplicator {
             Helper.initializeMatrixWithNumber(a, 10);
             Helper.initializeMatrixWithNumber(b, 10);
 
+            long startTime = System.nanoTime();
             int averow = NUMBER_OF_ROWS_IN_A / workersNumber;
             int extra = NUMBER_OF_ROWS_IN_A % workersNumber;
 
@@ -49,8 +52,12 @@ public class BlockingMatrixMultiplicator {
                 MPI.COMM_WORLD.Recv(c, offset[0], rows[0], MPI.OBJECT, source, FROM_WORKER_TAG);
 
             }
-            System.out.println("===== RESULT MATRIX =====");
-            Helper.outputMatrix(c);
+            long endTime = System.nanoTime();
+            System.out.println("===== RESULTS =====");
+            if (RESULT_IS_PRINTED) {
+                Helper.outputMatrix(c);
+            }
+            System.out.println("Execution time: " + (endTime - startTime) + " ns");
         } else {
             MPI.COMM_WORLD.Recv(offset, 0, 1, MPI.INT, MASTER, FROM_MASTER_TAG);
             MPI.COMM_WORLD.Recv(rows, 0, 1, MPI.INT, MASTER, FROM_MASTER_TAG);

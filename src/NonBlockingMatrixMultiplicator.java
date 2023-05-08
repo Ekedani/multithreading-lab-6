@@ -4,10 +4,12 @@ import mpi.Request;
 import java.util.ArrayList;
 
 public class NonBlockingMatrixMultiplicator {
-    public static int NUMBER_OF_ROWS_IN_A = 10;
-    public static int NUMBER_OF_COLS_IN_A = 10;
-    public static int NUMBER_OF_COLS_IN_B = 10;
+    public static int NUMBER_OF_ROWS_IN_A = 1000;
+    public static int NUMBER_OF_COLS_IN_A = 1000;
+    public static int NUMBER_OF_COLS_IN_B = 1000;
     public static int MASTER = 0;
+
+    public static boolean RESULT_IS_PRINTED = false;
 
     public static void main(String[] args) {
         int taskId, tasksNumber, workersNumber;
@@ -33,6 +35,7 @@ public class NonBlockingMatrixMultiplicator {
             Helper.initializeMatrixWithNumber(a, 10);
             Helper.initializeMatrixWithNumber(b, 10);
 
+            long startTime = System.nanoTime();
             int averow = NUMBER_OF_ROWS_IN_A / workersNumber;
             int extra = NUMBER_OF_ROWS_IN_A % workersNumber;
 
@@ -57,8 +60,13 @@ public class NonBlockingMatrixMultiplicator {
             for (var request : subTasksRequests) {
                 request.Wait();
             }
+            long endTime = System.nanoTime();
+
             System.out.println("===== RESULT MATRIX =====");
-            Helper.outputMatrix(c);
+            if (RESULT_IS_PRINTED) {
+                Helper.outputMatrix(c);
+            }
+            System.out.println("Execution time: " + (endTime - startTime) + " ns");
         } else {
             var offsetRequest = MPI.COMM_WORLD.Irecv(offset, 0, 1, MPI.INT, MASTER, MessageTag.OFFSET_FROM_MASTER.ordinal());
             var rowsRequest = MPI.COMM_WORLD.Irecv(rows, 0, 1, MPI.INT, MASTER, MessageTag.ROWS_FROM_MASTER.ordinal());
