@@ -1,15 +1,22 @@
 import java.util.Random;
 
 public class Helper {
-    public static double[][] generateMatrix(int rows, int cols, int low, int high) {
-        var random = new Random();
-        var result = new double[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                result[i][j] = low + random.nextDouble() * high;
+
+    public static void initializeMatrixWithNumber(double[][] matrix, double number) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                matrix[i][j] = number;
             }
         }
-        return result;
+    }
+
+    public static void initializeMatrixWithRandom(double[][] matrix, int low, int high) {
+        var random = new Random();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                matrix[i][j] = low + random.nextDouble() * high;
+            }
+        }
     }
 
     public static void outputMatrix(double[][] matrix) {
