@@ -8,8 +8,6 @@ public class NonBlockingMatrixMultiplicator {
     public static int NUMBER_OF_COLS_IN_A = 10;
     public static int NUMBER_OF_COLS_IN_B = 10;
     public static int MASTER = 0;
-    public static int FROM_MASTER_TAG = 1;
-    public static int FROM_WORKER_TAG = 2;
 
     public static void main(String[] args) {
         int taskId, tasksNumber, workersNumber;
