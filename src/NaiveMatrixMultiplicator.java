@@ -36,4 +36,23 @@ public class NaiveMatrixMultiplicator {
         }
         System.out.println("Execution time: " + (endTime - startTime) + " ns");
     }
+
+    public static boolean validateMultiplicationResult(double[][] a, double[][] b, double[][] c) {
+        double[][] result = new double[a.length][b.length];
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < b[0].length; j++) {
+                for (int k = 0; k < a[0].length; k++) {
+                    result[i][j] += a[i][k] * b[k][j];
+                }
+            }
+        }
+        for (int i = 0; i < c.length; i++) {
+            for (int j = 0; j < c[0].length; j++) {
+                if (c[i][j] != result[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

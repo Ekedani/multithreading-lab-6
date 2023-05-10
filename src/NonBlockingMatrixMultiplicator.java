@@ -11,6 +11,7 @@ public class NonBlockingMatrixMultiplicator {
 
     public static boolean RESULT_IS_PRINTED = false;
     public static boolean RANDOMIZE_MATRICES = false;
+    public static boolean VALIDATE_RESULT = false;
 
     public static void main(String[] args) {
         int taskId, tasksNumber, workersNumber;
@@ -73,6 +74,9 @@ public class NonBlockingMatrixMultiplicator {
                 Helper.outputMatrix(c);
             }
             System.out.println("Execution time: " + (endTime - startTime) + " ns");
+            if (VALIDATE_RESULT) {
+                System.out.println("Result is valid: " + NaiveMatrixMultiplicator.validateMultiplicationResult(a, b, c));
+            }
         } else {
             var offsetRequest = MPI.COMM_WORLD.Irecv(offset, 0, 1, MPI.INT, MASTER, MessageTag.OFFSET_FROM_MASTER.ordinal());
             var rowsRequest = MPI.COMM_WORLD.Irecv(rows, 0, 1, MPI.INT, MASTER, MessageTag.ROWS_FROM_MASTER.ordinal());

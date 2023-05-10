@@ -10,6 +10,8 @@ public class BlockingMatrixMultiplicator {
 
     public static boolean RESULT_IS_PRINTED = false;
     public static boolean RANDOMIZE_MATRICES = false;
+    public static boolean VALIDATE_RESULT = false;
+
 
     public static void main(String[] args) {
         int taskId, tasksNumber, workersNumber;
@@ -41,11 +43,11 @@ public class BlockingMatrixMultiplicator {
             }
 
             long startTime = System.nanoTime();
-            int averow = NUMBER_OF_ROWS_IN_A / workersNumber;
-            int extra = NUMBER_OF_ROWS_IN_A % workersNumber;
+            int rowsPerTask = NUMBER_OF_ROWS_IN_A / workersNumber;
+            int extraRows = NUMBER_OF_ROWS_IN_A % workersNumber;
 
             for (int destination = 1; destination <= workersNumber; destination++) {
-                rows[0] = (destination <= extra) ? averow + 1 : averow;
+                rows[0] = (destination <= extraRows) ? rowsPerTask + 1 : rowsPerTask;
                 MPI.COMM_WORLD.Send(offset, 0, 1, MPI.INT, destination, FROM_MASTER_TAG);
                 MPI.COMM_WORLD.Send(rows, 0, 1, MPI.INT, destination, FROM_MASTER_TAG);
                 MPI.COMM_WORLD.Send(a, offset[0], rows[0], MPI.OBJECT, destination, FROM_MASTER_TAG);
@@ -64,6 +66,9 @@ public class BlockingMatrixMultiplicator {
                 Helper.outputMatrix(c);
             }
             System.out.println("Execution time: " + (endTime - startTime) + " ns");
+            if (VALIDATE_RESULT) {
+                System.out.println("Result is valid: " + NaiveMatrixMultiplicator.validateMultiplicationResult(a, b, c));
+            }
         } else {
             MPI.COMM_WORLD.Recv(offset, 0, 1, MPI.INT, MASTER, FROM_MASTER_TAG);
             MPI.COMM_WORLD.Recv(rows, 0, 1, MPI.INT, MASTER, FROM_MASTER_TAG);
