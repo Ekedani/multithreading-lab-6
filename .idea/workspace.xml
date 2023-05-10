@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89653144-8958-49c9-bd4f-d46fabe6d4b6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/MPI_BlockingMultiplicator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/MPI_BlockingMultiplicator.xml" afterDir="false" />
+    <list default="true" id="89653144-8958-49c9-bd4f-d46fabe6d4b6" name="Changes" comment="Added time measurement">
+      <change afterPath="$PROJECT_DIR$/src/NaiveMatrixMultiplicator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Helper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BlockingMatrixMultiplicator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BlockingMatrixMultiplicator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/NonBlockingMatrixMultiplicator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NonBlockingMatrixMultiplicator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,6 +18,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -52,11 +53,24 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.MPI_BlockingMultiplicator">
+  <component name="RunManager" selected="Application.NaiveMatrixMultiplicator">
+    <configuration name="NaiveMatrixMultiplicator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="NaiveMatrixMultiplicator" />
+      <module name="lab-6" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.MPI_NonBlockingMultiplicator" />
       <item itemvalue="Application.MPI_BlockingMultiplicator" />
+      <item itemvalue="Application.NaiveMatrixMultiplicator" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.NaiveMatrixMultiplicator" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -69,11 +83,74 @@
       <workItem from="1683534761090" duration="6076000" />
       <workItem from="1683545192565" duration="77000" />
       <workItem from="1683545619136" duration="450000" />
-      <workItem from="1683546080166" duration="3177000" />
+      <workItem from="1683546080166" duration="20059000" />
+      <workItem from="1683619260934" duration="6321000" />
+      <workItem from="1683627809294" duration="882000" />
+      <workItem from="1683724837166" duration="681000" />
     </task>
+    <task id="LOCAL-00001" summary="Started implementing algorithms">
+      <created>1683549446697</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1683549446697</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Implemented BlockingMatrixMultiplicator, refactoring needed">
+      <created>1683557416667</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1683557416667</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Implemented NonBlockingMatrixMultiplicator">
+      <created>1683565195966</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1683565195966</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Waiting where buffer modified">
+      <created>1683565674955</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1683565674955</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Added proper MessageTags">
+      <created>1683568593766</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1683568593766</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Removed non-required tags">
+      <created>1683568615248</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1683568615248</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added time measurement">
+      <created>1683570917733</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1683570917733</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Started implementing algorithms" />
+    <MESSAGE value="Implemented BlockingMatrixMultiplicator, refactoring needed" />
+    <MESSAGE value="Implemented NonBlockingMatrixMultiplicator" />
+    <MESSAGE value="Waiting where buffer modified" />
+    <MESSAGE value="Added proper MessageTags" />
+    <MESSAGE value="Removed non-required tags" />
+    <MESSAGE value="Added time measurement" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added time measurement" />
   </component>
 </project>

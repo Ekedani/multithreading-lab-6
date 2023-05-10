@@ -10,6 +10,7 @@ public class NonBlockingMatrixMultiplicator {
     public static int MASTER = 0;
 
     public static boolean RESULT_IS_PRINTED = false;
+    public static boolean RANDOMIZE_MATRICES = false;
 
     public static void main(String[] args) {
         int taskId, tasksNumber, workersNumber;
@@ -32,8 +33,13 @@ public class NonBlockingMatrixMultiplicator {
 
         if (taskId == MASTER) {
             System.out.println("MPI_NBMM has started with " + tasksNumber + " tasks.");
-            Helper.initializeMatrixWithNumber(a, 10);
-            Helper.initializeMatrixWithNumber(b, 10);
+            if (RANDOMIZE_MATRICES) {
+                Helper.initializeMatrixWithRandom(a, 50, 500);
+                Helper.initializeMatrixWithRandom(b, 50, 500);
+            } else {
+                Helper.initializeMatrixWithNumber(a, 100);
+                Helper.initializeMatrixWithNumber(b, 100);
+            }
 
             long startTime = System.nanoTime();
             int averow = NUMBER_OF_ROWS_IN_A / workersNumber;
