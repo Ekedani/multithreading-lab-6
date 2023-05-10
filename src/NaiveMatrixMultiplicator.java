@@ -38,7 +38,7 @@ public class NaiveMatrixMultiplicator {
     }
 
     public static boolean validateMultiplicationResult(double[][] a, double[][] b, double[][] c) {
-        double[][] result = new double[a.length][b.length];
+        double[][] result = new double[a.length][b[0].length];
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < b[0].length; j++) {
                 for (int k = 0; k < a[0].length; k++) {
